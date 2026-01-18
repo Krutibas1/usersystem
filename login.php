@@ -8,7 +8,7 @@
 <body>
     <h2>Login</h2>
 
-    <form >
+    <form method="post">
         Email: <input type="email" name="email" required><br><br>
         Passwoed: <input type="password" name="password" required><br><br>
         <button type="submit" name="login">Login</button>

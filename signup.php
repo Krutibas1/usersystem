@@ -8,7 +8,7 @@
 <body>
     <h2>SignUp</h2>
      
-    <form >
+    <form method="post">
         Name: <input type="text" name="name" required><br><br>
         Email: <input type="email" name="email" required><br><br>
         Password: <input type="password" name="password" required><br><br>
@@ -20,7 +20,7 @@
     <?php
 include "config.php";
 
-if(isset($_Post['signup'])){
+if(isset($_POST['signup'])){
     $name= $_POST['name'];
     $email=$_POST['email'];
     $password= password_hash($_POST['password'], PASSWORD_DEFAULT);

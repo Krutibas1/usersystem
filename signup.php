@@ -15,5 +15,25 @@
 
         <button type="submit" name="signup">Signup</button>
     </form>
+
+
+    <?php
+include "config.php";
+
+if(isset($_Post['signup'])){
+    $name= $_POST['name'];
+    $email=$_POST['email'];
+    $password= password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+    $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
+
+    if($conn->query($sql)) {
+        echo "Signup successful.";
+    }else{
+        echo "Email already exists";
+    }
+}
+?>
 </body>
 </html>
+

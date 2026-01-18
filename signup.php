@@ -1,39 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h2>SignUp</h2>
-     
-    <form method="post">
-        Name: <input type="text" name="name" required><br><br>
-        Email: <input type="email" name="email" required><br><br>
-        Password: <input type="password" name="password" required><br><br>
+<?php
+session_start();
+require_once "config.php";
 
-        <button type="submit" name="signup">Signup</button>
-    </form>
+$error = "";
 
+if (isset($_POST['signup'])) {
 
-    <?php
-include "config.php";
+    $name = trim($_POST['name']);
+    $email = trim($_POST['email']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-if(isset($_POST['signup'])){
-    $name= $_POST['name'];
-    $email=$_POST['email'];
-    $password= password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $stmt = $conn->prepare(
+        "INSERT INTO users (name, email, password) VALUES (?, ?, ?)"
+    );
+    $stmt->bind_param("sss", $name, $email, $password);
 
-    $sql = "INSERT INTO users (name, email, password) VALUES ('$name', '$email', '$password')";
+    if ($stmt->execute()) {
 
-    if($conn->query($sql)) {
-        echo "Signup successful.";
-    }else{
-        echo "Email already exists";
+        // redirect to login after signup
+        header("Location: login.php");
+        exit;
+
+    } else {
+        $error = "Email already exists";
     }
 }
 ?>
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Signup</h2>
+
+<form method="post">
+    Name: <input type="text" name="name" required><br><br>
+    Email: <input type="email" name="email" required><br><br>
+    Password: <input type="password" name="password" required><br><br>
+    <button type="submit" name="signup">Signup</button>
+</form>
+
+<p style="color:red;"><?php echo $error; ?></p>
 </body>
 </html>
-
